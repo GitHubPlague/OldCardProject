@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:ntb="http://www.example.org/OldCardXMLSchema" targetNamespace="http://www.example.org/OldCardXMLSchema">
+
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">
+			Old Card schema for
+			www.example.org.
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:element name="OldCard" type="ntb:OldCardType" />
+
+	<xsd:complexType name="OldCardType">
+		<xsd:sequence>
+			<xsd:element name="card" type="ntb:cardType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="cardType">
+		<xsd:sequence>
+			<xsd:element name="ThemaOldCard" type="ntb:themaCard"
+				minOccurs="0" maxOccurs="3" />
+			<xsd:element name="TypeOldCard" type="ntb:typeCard" />
+			<xsd:element name="CountryYearAuthorOldCard">
+				<xsd:complexType>
+					<xsd:attribute name="country" type="xsd:string" use="required" />
+					<xsd:attribute name="year" type="ntb:dateCard" use="required" />
+					<xsd:attribute name="author" type="xsd:string" use="optional" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ValuableOldCard" type="ntb:valuableCard"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="themaCard">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="городской пейзаж" />
+			<xsd:enumeration value="природа" />
+			<xsd:enumeration value="люди" />
+			<xsd:enumeration value="религия" />
+			<xsd:enumeration value="спорт" />
+			<xsd:enumeration value="архитектура" />
+			<xsd:enumeration value="другое" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="typeCard">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="type" type="ntb:typeEnum"
+					default='обычная' />
+				<xsd:attribute name="send" type="ntb:sendCardEnum"
+					default='не отправлена' />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="typeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="обычная" />
+			<xsd:enumeration value="рекламная" />
+			<xsd:enumeration value="поздравительная" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:simpleType name="sendCardEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="отправлена" />
+			<xsd:enumeration value="не отправлена" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="dateCard">
+		<xsd:restriction base="xsd:nonNegativeInteger">
+			<xsd:pattern value="[1-2][0-9][0-9][0-9]" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="valuableCard">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="valuable" type="ntb:valuable"
+					default='тематическая' />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="valuable">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="историческая" />
+			<xsd:enumeration value="коллекционная" />
+			<xsd:enumeration value="тематическая" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>		
