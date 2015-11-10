@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ntb:OldCard xmlns:ntb="http://www.example.org/OldCardXMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/OldCardXMLSchema OldCardXMLSchema.xsd ">
+	<card>
+		<ThemaOldCard>архитектура</ThemaOldCard>
+		<ThemaOldCard>городской пейзаж</ThemaOldCard>
+		<TypeOldCard type="поздравительная" />
+		<CountryYearAuthorOldCard year="1780"
+			country="UK" author="Smith" />
+		<ValuableOldCard valuable="коллекционная" />
+
+	</card>
+</ntb:OldCard>
