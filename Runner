@@ -1,0 +1,62 @@
+package runner;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+
+import comparator.EldestCard;
+import generated.OldCard;
+import parser.AbstractParser;
+import parser.ParserChooser;
+import parser.UnMarshalWithXSD;
+import parser.menu.ParserEntering;
+import transform.Transformator;
+import validator.menu.ValidatorEntering;
+
+public class Runner {
+
+  private static final Logger log = LogManager.getLogger(Runner.class);
+
+  public static void main(String[] args) {
+
+    // TODO: logger ???
+    Configurator.setRootLevel(Level.INFO);
+
+    // TODO: в ValidatorSAX сделать logger и проверять есть ли записи в логгере,
+    // если есть то возвращать 0, иначе 1.
+    ValidatorEntering validatorEntering = new ValidatorEntering();
+    int check = validatorEntering.menu();
+    if (check == 1) {
+    
+      // Процесс маршаллизации состоит из создания JAXB контекста на основе
+      // класса OldCardsList (сгенеренный), создания на его основе экземпляра
+      // типа Marshaller и вывод информации на экран.
+      // TODO: запись полученного экземпляра в файл
+      UnMarshalWithXSD unmar = new UnMarshalWithXSD();
+      unmar.unMarshalate();
+
+      // вызов меню с парсерами.
+      // должен вернуться объект типа AbstractParser
+      // TODO: добавить сохранение объекта
+      String parserType = new ParserEntering().menu();
+      AbstractParser abstractBuilder = ParserChooser.choose(parserType);
+      abstractBuilder.parse();
+
+      for (OldCard c : abstractBuilder.getOldCardsList().getOldCard()) {
+        log.info("[" + " Subject=" + c.getSubject() + ", Type=" + c.getType() + ", Country=" + c.getCountry() + ", Submited=" + c.isSubmited() + ", Year=" + c.getYear() + "Author=" + c.getAuthor() + ", Value=" + c.getValue() + "]");
+      }
+
+      // abstractBuilder.getOldCardsList() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+      // comparator. find the eldest
+      EldestCard.find(abstractBuilder);
+
+      // TODO: трансформатор в pdf
+      Transformator transformator = new Transformator();
+      transformator.transform();
+    } else {
+      System.out.println("Further actions are not possible because of problems with xml or xsd");
+    }
+  }
+}
